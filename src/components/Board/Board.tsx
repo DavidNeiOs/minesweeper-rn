@@ -4,10 +4,18 @@ import { View, Alert, Button } from "react-native";
 import { CONSTANTS } from "../../constants";
 import { Cell } from "../Cell";
 
+interface GameState {
+  over: boolean;
+  result: "" | "LOST" | "WIN";
+}
+
 interface BoardProps {}
 
 export const Board: React.FC<BoardProps> = ({}) => {
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameOver, setIsGameOver] = useState<GameState>({
+    over: false,
+    result: "",
+  });
   const { CELL_SIZE, BOARD_SIZE } = CONSTANTS;
   const boardWidth = CELL_SIZE * BOARD_SIZE;
 
@@ -20,7 +28,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
 
   useEffect(() => {
     // Effect that reveals all cells when the game is over
-    if (!isGameOver) return;
+    if (!isGameOver.over) return;
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
         // havent found the proper way to type the useRef hook
@@ -28,11 +36,15 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.onReveal(true);
       }
     }
+    const message =
+      isGameOver.result === "LOST"
+        ? "Ooops you stepped on a mine!"
+        : "Congratulations ! you found all the mines";
+    Alert.alert(message);
   }, [isGameOver]);
 
   const onDie = () => {
-    setIsGameOver(true);
-    Alert.alert("Ooops you stepped on a mine!");
+    setIsGameOver({ over: true, result: "LOST" });
   };
 
   /**
@@ -86,11 +98,24 @@ export const Board: React.FC<BoardProps> = ({}) => {
     }
   };
 
+  // if all mines have been flagged and non mines unvealed return true
+  const getWinner = () => {
+    for (let i = 0; i < BOARD_SIZE; i++) {
+      for (let j = 0; j < BOARD_SIZE; j++) {
+        // @ts-ignore
+        if (!grid[i][j].current?.isDone()) {
+          return;
+        }
+      }
+    }
+    setIsGameOver({ over: true, result: "WIN" });
+  };
+
   /**
    * Create a new game by resetting cells state
    */
   const newGame = () => {
-    setIsGameOver(false);
+    setIsGameOver({ over: false, result: "" });
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
         //@ts-ignore
@@ -114,6 +139,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
             y={colIdx}
             ref={grid[rowIdx][colIdx]}
             isGameOver={isGameOver}
+            getWinner={getWinner}
           />
         );
       });

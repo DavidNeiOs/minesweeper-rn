@@ -23,7 +23,11 @@ interface CellProps {
   y: number;
   onReveal: (x: number, y: number) => void;
   onDie: () => void;
-  isGameOver: boolean;
+  isGameOver: {
+    over: boolean;
+    result: "" | "LOST" | "WIN";
+  };
+  getWinner: () => void;
 }
 
 export type CellType = RefForwardingComponent<Handles, CellProps>;
@@ -32,9 +36,11 @@ const CellComponent: CellType = (
   { width, height, ...props }: CellProps,
   ref
 ) => {
+  const mined = Math.random() < 0.2;
   const [revealed, setRevealed] = useState(false);
-  const [isMined, setIsMined] = useState(Math.random() < 0.2);
+  const [isMined, setIsMined] = useState(mined);
   const [neighbors, setNeighbors] = useState(0);
+  const [flagged, setFlagged] = useState(mined);
   // This variable tell us if it's the first time the cell renders to avoid our
   // useEffect from running onReveal
   const firtsRender = useRef(true);
@@ -47,7 +53,7 @@ const CellComponent: CellType = (
 
     if (!revealed) return;
 
-    if (isMined && !props.isGameOver) {
+    if (isMined && !props.isGameOver.over && !flagged) {
       props.onDie();
     } else {
       props.onReveal(props.x, props.y);
@@ -58,6 +64,7 @@ const CellComponent: CellType = (
     setRevealed(false);
     setIsMined(Math.random() < 0.2);
     setNeighbors(0);
+    setFlagged(false);
   };
 
   const onReveal = (isUserAction: boolean) => {
@@ -69,32 +76,64 @@ const CellComponent: CellType = (
     setRevealed(true);
   };
 
+  const flagCell = () => {
+    setFlagged((flagged) => !flagged);
+  };
+
   // this hook exposes the fucntion in the returned object
   useImperativeHandle(ref, () => ({
     onReveal,
     setNeighbors,
     getIsMined: () => isMined,
     reset,
+    isDone: () => {
+      return (isMined && flagged) || (!isMined && revealed);
+    },
   }));
 
   if (!revealed) {
     return (
-      <TouchableOpacity onPress={() => onReveal(true)}>
+      <TouchableOpacity
+        onPress={() => {
+          onReveal(true);
+          props.getWinner();
+        }}
+        onLongPress={() => {
+          flagCell();
+          props.getWinner();
+        }}
+      >
         <View style={[styles.cell, { width, height }]}>
-          {/**Add flag Image when flagged */}
+          {flagged ? (
+            <Image
+              source={Images.flag}
+              resizeMode="center"
+              style={{ width, height }}
+            />
+          ) : null}
         </View>
       </TouchableOpacity>
     );
   } else {
     let content = null;
     if (isMined) {
-      content = (
-        <Image
-          source={Images.mine}
-          style={{ width: width / 2, height: height / 2 }}
-          resizeMode="contain"
-        />
-      );
+      if (flagged) {
+        content = (
+          <Image
+            source={Images.flaggedMine}
+            resizeMode="contain"
+            style={{ width, height }}
+          />
+        );
+      } else {
+        content = (
+          <Image
+            source={Images.mine}
+            style={{ width: width / 2, height: height / 2 }}
+            resizeMode="contain"
+          />
+        );
+      }
     } else if (neighbors) {
       content = <Text>{neighbors}</Text>;
     }
