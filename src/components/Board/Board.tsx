@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { View, Alert, Button } from "react-native";
 
 import { CONSTANTS } from "../../constants";
 import { Cell } from "../Cell";
+import { ModalContext } from "../../contexts/ModalContext";
 
-interface GameState {
+export interface GameState {
   over: boolean;
   result: "" | "LOST" | "WIN";
 }
@@ -18,6 +19,8 @@ export const Board: React.FC<BoardProps> = ({}) => {
   });
   const { CELL_SIZE, BOARD_SIZE } = CONSTANTS;
   const boardWidth = CELL_SIZE * BOARD_SIZE;
+
+  const { showModal } = useContext(ModalContext);
 
   // We keep a reference to evey cell since we need to access them later
   let grid = Array.apply(null, Array(BOARD_SIZE)).map((row, idx) => {
@@ -40,7 +43,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
       isGameOver.result === "LOST"
         ? "Ooops you stepped on a mine!"
         : "Congratulations ! you found all the mines";
-    Alert.alert(message);
+    showModal({ message, action: newGame });
   }, [isGameOver]);
 
   const onDie = () => {

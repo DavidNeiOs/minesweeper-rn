@@ -9,6 +9,7 @@ import React, {
 import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
 
 import Images from "../../assets/img";
+import { GameState } from "../Board";
 
 interface Handles {
   onReveal: (isUserAction: boolean) => void;
@@ -23,10 +24,7 @@ interface CellProps {
   y: number;
   onReveal: (x: number, y: number) => void;
   onDie: () => void;
-  isGameOver: {
-    over: boolean;
-    result: "" | "LOST" | "WIN";
-  };
+  isGameOver: GameState;
   getWinner: () => void;
 }
 
