@@ -38,7 +38,7 @@ export const Modal: React.FC<ModalProps> = ({}) => {
                 useForeground
               >
                 <View style={styles.button}>
-                  <Text style={styles.buttonText}>RETRY</Text>
+                  <Text style={styles.buttonText}>{options.buttonText}</Text>
                 </View>
               </TouchableButton>
             </View>
@@ -115,5 +115,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: "#FFF",
+    textTransform: "uppercase",
   },
 });

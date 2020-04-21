@@ -45,12 +45,14 @@ export const Board: React.FC<BoardProps> = ({}) => {
       options = {
         title: "Oops!",
         message: "You stepped on a mine.",
+        buttonText: "Try again",
         action: reset,
       };
     } else {
       options = {
         title: "Congrats!",
         message: "You found all the mines",
+        buttonText: "New Game",
         action: newGame,
       };
     }
@@ -84,7 +86,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
   };
 
   /**
-   * Find how many mains are around the cell, if any reveal surounding cells
+   * Find how many mines are around the cell, if none reveal surounding cells
    * @param x position of the current cell on x postion
    * @param y position of the current cell on y postion
    */
@@ -142,7 +144,6 @@ export const Board: React.FC<BoardProps> = ({}) => {
   /**
    * Start a new game
    */
-
   const newGame = () => {
     setIsGameOver({ over: false, result: "" });
     for (let i = 0; i < BOARD_SIZE; i++) {

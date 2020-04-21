@@ -15,6 +15,9 @@ interface Handles {
   onReveal: (isUserAction: boolean) => void;
   setNeighbors: React.Dispatch<React.SetStateAction<number>>;
   getIsMined: () => boolean;
+  setNewValues: () => void;
+  reset: () => void;
+  isDone: () => boolean;
 }
 
 interface CellProps {
@@ -28,7 +31,7 @@ interface CellProps {
   getWinner: () => void;
 }
 
-export type CellType = RefForwardingComponent<Handles, CellProps>;
+type CellType = RefForwardingComponent<Handles, CellProps>;
 
 const CellComponent: CellType = (
   { width, height, ...props }: CellProps,
@@ -62,7 +65,7 @@ const CellComponent: CellType = (
     setRevealed(false);
     setIsMined(mined.current);
     setNeighbors(0);
-    setFlagged(mined.current);
+    setFlagged(false);
   };
 
   const setNewValues = () => {
@@ -98,42 +101,26 @@ const CellComponent: CellType = (
     },
   }));
 
-  if (!revealed) {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          onReveal(true);
-          props.getWinner();
-        }}
-        onLongPress={() => {
-          flagCell();
-          props.getWinner();
-        }}
-      >
-        <View style={[styles.cell, { width, height }]}>
-          {flagged ? (
-            <Image
-              source={Images.flag}
-              resizeMode="center"
-              style={{ width, height }}
-            />
-          ) : null}
-        </View>
-      </TouchableOpacity>
-    );
-  } else {
-    let content = null;
-    if (isMined) {
+  const getContent = () => {
+    if (!revealed && flagged) {
+      return (
+        <Image
+          source={Images.flag}
+          resizeMode="center"
+          style={{ width, height }}
+        />
+      );
+    } else if (isMined) {
       if (flagged) {
-        content = (
+        return (
           <Image
             source={Images.flaggedMine}
             resizeMode="contain"
             style={{ width, height }}
           />
         );
-      } else {
-        content = (
+      } else if (revealed) {
+        return (
           <Image
             source={Images.mine}
             style={{ width: width / 2, height: height / 2 }}
@@ -142,12 +129,27 @@ const CellComponent: CellType = (
         );
       }
     } else if (neighbors) {
-      content = <Text>{neighbors}</Text>;
+      return <Text>{neighbors}</Text>;
     }
-    return (
-      <View style={[styles.cellRevealed, { width, height }]}>{content}</View>
-    );
-  }
+    return null;
+  };
+
+  return !revealed ? (
+    <TouchableOpacity
+      onPress={() => {
+        onReveal(true);
+        props.getWinner();
+      }}
+      onLongPress={() => {
+        flagCell();
+        props.getWinner();
+      }}
+    >
+      <View style={[styles.cell, { width, height }]}>{getContent()}</View>
+    </TouchableOpacity>
+  ) : (
+    <View style={[styles.cellRevealed, { width, height }]}>{getContent()}</View>
+  );
 };
 
 export const Cell = forwardRef(CellComponent);

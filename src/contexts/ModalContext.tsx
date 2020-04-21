@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export interface Options {
   title: string;
   message: string;
+  buttonText: string;
   action: () => void;
 }
 
@@ -16,6 +17,7 @@ export const ModalContext = React.createContext<{
   options: {
     title: "",
     message: "",
+    buttonText: "",
     action: () => {},
   },
   showModal: () => {},
@@ -26,9 +28,10 @@ interface ModalProviderProps {}
 
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isModalShown, setIsModalShown] = useState(false);
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState<Options>({
     title: "",
     message: "",
+    buttonText: "",
     action: () => {},
   });
 
