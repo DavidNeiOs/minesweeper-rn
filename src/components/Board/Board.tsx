@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { View, Alert, Button } from "react-native";
+import { View } from "react-native";
 
 import { CONSTANTS } from "../../constants";
 import { Cell } from "../Cell";
-import { ModalContext } from "../../contexts/ModalContext";
+import { ModalContext, Options } from "../../contexts/ModalContext";
 
 export interface GameState {
   over: boolean;
@@ -39,13 +39,23 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.onReveal(true);
       }
     }
-    const title = isGameOver.result === "LOST" ? "Oops" : "Congrats!";
 
-    const message =
-      isGameOver.result === "LOST"
-        ? "you stepped on a mine!"
-        : "you found all the mines";
-    showModal({ title, message, action: newGame });
+    let options = {} as Options;
+    if (isGameOver.result === "LOST") {
+      options = {
+        title: "Oops!",
+        message: "You stepped on a mine.",
+        action: reset,
+      };
+    } else {
+      options = {
+        title: "Congrats!",
+        message: "You found all the mines",
+        action: newGame,
+      };
+    }
+
+    showModal(options);
   }, [isGameOver]);
 
   const onDie = () => {
@@ -117,14 +127,28 @@ export const Board: React.FC<BoardProps> = ({}) => {
   };
 
   /**
-   * Create a new game by resetting cells state
+   * Reset cells to try again
    */
-  const newGame = () => {
+  const reset = () => {
     setIsGameOver({ over: false, result: "" });
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
         //@ts-ignore
         grid[i][j].current?.reset();
+      }
+    }
+  };
+
+  /**
+   * Start a new game
+   */
+
+  const newGame = () => {
+    setIsGameOver({ over: false, result: "" });
+    for (let i = 0; i < BOARD_SIZE; i++) {
+      for (let j = 0; j < BOARD_SIZE; j++) {
+        //@ts-ignore
+        grid[i][j].current?.setNewValues();
       }
     }
   };

@@ -62,6 +62,14 @@ const CellComponent: CellType = (
     setRevealed(false);
     setIsMined(mined.current);
     setNeighbors(0);
+    setFlagged(mined.current);
+  };
+
+  const setNewValues = () => {
+    setRevealed(false);
+    mined.current = Math.random() < 0.2;
+    setIsMined(mined.current);
+    setNeighbors(0);
     setFlagged(false);
   };
 
@@ -82,8 +90,9 @@ const CellComponent: CellType = (
   useImperativeHandle(ref, () => ({
     onReveal,
     setNeighbors,
-    getIsMined: () => isMined,
+    setNewValues,
     reset,
+    getIsMined: () => isMined,
     isDone: () => {
       return (isMined && flagged) || (!isMined && revealed);
     },

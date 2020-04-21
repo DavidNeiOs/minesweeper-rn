@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface Options {
+export interface Options {
   title: string;
   message: string;
   action: () => void;
