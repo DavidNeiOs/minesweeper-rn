@@ -1,12 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Modal as NativeModal,
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  ViewStyle,
-} from "react-native";
+import { Modal as NativeModal, View, Text, StyleSheet } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 import { ModalContext } from "../../contexts/ModalContext";
@@ -32,17 +25,23 @@ export const Modal: React.FC<ModalProps> = ({}) => {
             duration={500}
             delay={1000}
           >
-            <Text>{options.message}</Text>
-            <TouchableButton
-              onPress={() => {
-                options.action();
-                hideModal();
-              }}
-            >
-              <View>
-                <Text>RETRY</Text>
-              </View>
-            </TouchableButton>
+            <View style={styles.info}>
+              <Text style={styles.title}>{options.title}</Text>
+              <Text style={styles.description}>{options.message}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableButton
+                onPress={() => {
+                  options.action();
+                  hideModal();
+                }}
+                useForeground
+              >
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>RETRY</Text>
+                </View>
+              </TouchableButton>
+            </View>
           </Animatable.View>
         </Animatable.View>
       </View>
@@ -83,9 +82,38 @@ const styles = StyleSheet.create({
     minHeight: 168,
     width: "100%",
     alignItems: "center",
+    justifyContent: "space-around",
     borderRadius: 8,
     paddingVertical: 16,
     paddingHorizontal: 8,
     backgroundColor: "#FFF",
+  },
+  info: {
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginVertical: 8,
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  button: {
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    backgroundColor: "dodgerblue",
+    borderWidth: 3,
+    borderRadius: 20,
+    borderColor: "navy",
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "#FFF",
   },
 });

@@ -39,11 +39,13 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.onReveal(true);
       }
     }
+    const title = isGameOver.result === "LOST" ? "Oops" : "Congrats!";
+
     const message =
       isGameOver.result === "LOST"
-        ? "Ooops you stepped on a mine!"
-        : "Congratulations ! you found all the mines";
-    showModal({ message, action: newGame });
+        ? "you stepped on a mine!"
+        : "you found all the mines";
+    showModal({ title, message, action: newGame });
   }, [isGameOver]);
 
   const onDie = () => {
@@ -164,7 +166,6 @@ export const Board: React.FC<BoardProps> = ({}) => {
       }}
     >
       {renderBoard()}
-      <Button title="New Game" onPress={newGame} />
     </View>
   );
 };

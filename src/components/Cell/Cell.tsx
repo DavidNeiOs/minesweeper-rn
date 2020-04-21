@@ -34,11 +34,11 @@ const CellComponent: CellType = (
   { width, height, ...props }: CellProps,
   ref
 ) => {
-  const mined = Math.random() < 0.2;
+  const mined = useRef(Math.random() < 0.2);
   const [revealed, setRevealed] = useState(false);
-  const [isMined, setIsMined] = useState(mined);
+  const [isMined, setIsMined] = useState(mined.current);
   const [neighbors, setNeighbors] = useState(0);
-  const [flagged, setFlagged] = useState(mined);
+  const [flagged, setFlagged] = useState(false);
   // This variable tell us if it's the first time the cell renders to avoid our
   // useEffect from running onReveal
   const firtsRender = useRef(true);
@@ -60,7 +60,7 @@ const CellComponent: CellType = (
 
   const reset = () => {
     setRevealed(false);
-    setIsMined(Math.random() < 0.2);
+    setIsMined(mined.current);
     setNeighbors(0);
     setFlagged(false);
   };
