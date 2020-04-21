@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 import { CONSTANTS } from "../../constants";
 import { Cell } from "../Cell";
 import { ModalContext, Options } from "../../contexts/ModalContext";
+import { Score } from "../Score";
 
 export interface GameState {
   over: boolean;
@@ -22,6 +23,17 @@ export const Board: React.FC<BoardProps> = ({}) => {
 
   const { showModal } = useContext(ModalContext);
 
+  const [score, setScore] = useState(0);
+
+  const timer = useRef(0);
+
+  useEffect(() => {
+    if (timer.current) return;
+    timer.current = setInterval(() => {
+      setScore((score) => score + 1);
+    }, 1000);
+  }, [score]);
+
   // We keep a reference to evey cell since we need to access them later
   let grid = Array.apply(null, Array(BOARD_SIZE)).map((row, idx) => {
     return Array.apply(null, Array(BOARD_SIZE)).map((col, idx) => {
@@ -39,6 +51,8 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.onReveal(true);
       }
     }
+    clearInterval(timer.current);
+    timer.current = 0;
 
     let options = {} as Options;
     if (isGameOver.result === "LOST") {
@@ -46,6 +60,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
         title: "Oops!",
         message: "You stepped on a mine.",
         buttonText: "Try again",
+        score: 0,
         action: reset,
       };
     } else {
@@ -53,6 +68,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
         title: "Congrats!",
         message: "You found all the mines",
         buttonText: "New Game",
+        score,
         action: newGame,
       };
     }
@@ -139,6 +155,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.reset();
       }
     }
+    setScore(0);
   };
 
   /**
@@ -152,6 +169,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
         grid[i][j].current?.setNewValues();
       }
     }
+    setScore(0);
   };
 
   /**Create Board */
@@ -183,13 +201,8 @@ export const Board: React.FC<BoardProps> = ({}) => {
   };
 
   return (
-    <View
-      style={{
-        width: boardWidth,
-        height: boardWidth,
-        backgroundColor: "#888",
-      }}
-    >
+    <View>
+      <Score boardWidth={boardWidth} score={score} />
       {renderBoard()}
     </View>
   );

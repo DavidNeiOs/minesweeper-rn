@@ -5,6 +5,7 @@ export interface Options {
   message: string;
   buttonText: string;
   action: () => void;
+  score: number;
 }
 
 export const ModalContext = React.createContext<{
@@ -18,6 +19,7 @@ export const ModalContext = React.createContext<{
     title: "",
     message: "",
     buttonText: "",
+    score: 0,
     action: () => {},
   },
   showModal: () => {},
@@ -32,6 +34,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
     title: "",
     message: "",
     buttonText: "",
+    score: 0,
     action: () => {},
   });
 

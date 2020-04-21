@@ -28,6 +28,9 @@ export const Modal: React.FC<ModalProps> = ({}) => {
             <View style={styles.info}>
               <Text style={styles.title}>{options.title}</Text>
               <Text style={styles.description}>{options.message}</Text>
+              {Boolean(options.score) && (
+                <Text style={styles.score}>Your score is: {options.score}</Text>
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <TouchableButton
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
   },
   info: {
     alignItems: "center",
+    marginBottom: 16,
   },
   title: {
     fontSize: 20,
@@ -98,7 +102,9 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    marginBottom: 16,
+  },
+  score: {
+    fontSize: 16,
   },
   buttonContainer: {
     borderRadius: 20,
