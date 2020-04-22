@@ -5,11 +5,11 @@
 this project was created using [Expo](https://expo.io/) make sure you have installed their cli
 
 1. `git clone` this repo
-1. cd into the new directory
-1. run `yarn` or `npm i` to install dependencies
-1. run `yarn start`
-1. once the is loaded press i to launch the ios emulator or a for android (you must have the android emulator running)
-1. have fun
+1. `cd` into the new directory
+1. Run `yarn` or `npm i` to install dependencies
+1. Run `yarn start` or `npm run start`
+1. Once it has finish loading press **i** to launch the ios emulator or **a** for android (you must have the android emulator running)
+1. Have fun!
 
 ## Rules
 
