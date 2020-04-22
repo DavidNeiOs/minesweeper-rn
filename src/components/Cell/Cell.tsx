@@ -6,10 +6,28 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  TextStyle,
+  Platform,
+} from "react-native";
 
 import Images from "../../assets/img";
 import { GameState } from "../Board";
+
+const getColor = (neighbors: number): TextStyle => {
+  let color = "black";
+  if (neighbors === 1) color = "forestgreen";
+  if (neighbors === 2) color = "navy";
+  if (neighbors >= 3) color = "crimson";
+  return {
+    color,
+  };
+};
 
 interface Handles {
   onReveal: (isUserAction: boolean) => void;
@@ -129,7 +147,11 @@ const CellComponent: CellType = (
         );
       }
     } else if (neighbors) {
-      return <Text>{neighbors}</Text>;
+      return (
+        <Text style={[styles.neighborsText, getColor(neighbors)]}>
+          {neighbors}
+        </Text>
+      );
     }
     return null;
   };
@@ -170,5 +192,10 @@ const styles = StyleSheet.create({
     borderColor: "#7D7D7D",
     alignItems: "center",
     justifyContent: "center",
+  },
+  neighborsText: {
+    fontFamily: Platform.OS === "android" ? "serif" : "Verdana",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
