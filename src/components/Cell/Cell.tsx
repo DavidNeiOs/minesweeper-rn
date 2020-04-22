@@ -133,7 +133,7 @@ const CellComponent: CellType = (
         return (
           <Image
             source={Images.flaggedMine}
-            resizeMode="contain"
+            resizeMode="center"
             style={{ width, height }}
           />
         );
