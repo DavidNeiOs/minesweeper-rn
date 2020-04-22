@@ -13,7 +13,7 @@ const fetchFonts = () => {
   });
 };
 
-export default function App() {
+const App: React.FC<{}> = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   if (!fontLoaded) {
@@ -32,7 +32,9 @@ export default function App() {
       </ModalProvider>
     </View>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
