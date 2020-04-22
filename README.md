@@ -8,6 +8,6 @@ Once a cell is Flagged it won't make you lose the game if you reveal it and is a
 
 ### images
 
-![android](/assets/android-mines.png)
-![ios](/assets/ios-mines.png)
 ![gif](/assets/minesweeper.gif)
+<img src="/assets/android-mines.png" width="200" height="400" />
+<img src="/assets/ios-mines.png" width="200" height="400" />
