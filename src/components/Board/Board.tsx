@@ -32,7 +32,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
     timer.current = setInterval(() => {
       setScore((score) => score + 1);
     }, 1000);
-  }, [score]);
+  }, [isGameOver]);
 
   // We keep a reference to evey cell since we need to access them later
   let grid = Array.apply(null, Array(BOARD_SIZE)).map((row, idx) => {
@@ -57,7 +57,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
     let options = {} as Options;
     if (isGameOver.result === "LOST") {
       options = {
-        title: "Oops!",
+        title: "You Lose!",
         message: "You stepped on a mine.",
         buttonText: "Try again",
         score: 0,
@@ -65,7 +65,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
       };
     } else {
       options = {
-        title: "Congrats!",
+        title: "You Win!",
         message: "You found all the mines",
         buttonText: "New Game",
         score,
