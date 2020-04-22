@@ -59,7 +59,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
       options = {
         title: "You Lose!",
         message: "You stepped on a mine.",
-        buttonText: "Try again",
+        buttonText: "Retry",
         score: 0,
         action: reset,
       };
