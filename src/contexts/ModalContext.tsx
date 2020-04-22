@@ -8,23 +8,16 @@ export interface Options {
   score: number;
 }
 
-export const ModalContext = React.createContext<{
+type ModalContextType = {
   isModalShown: boolean;
   options: Options;
   showModal: (options: Options) => void;
   hideModal: () => void;
-}>({
-  isModalShown: false,
-  options: {
-    title: "",
-    message: "",
-    buttonText: "",
-    score: 0,
-    action: () => {},
-  },
-  showModal: () => {},
-  hideModal: () => {},
-});
+};
+
+export const ModalContext = React.createContext<ModalContextType>(
+  {} as ModalContextType
+);
 
 interface ModalProviderProps {}
 

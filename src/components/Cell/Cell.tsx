@@ -79,7 +79,7 @@ const CellComponent: CellType = (
   const onReveal = (isUserAction: boolean) => {
     // if the cell has alreday been revealed return
     if (revealed) return;
-    // if the reveal was triggerd by adjacent cell and this cell is a Mine return
+    // if the reveal was triggered by adjacent cell and this cell is a Mine return
     if (!isUserAction && isMined) return;
 
     setRevealed(true);
@@ -89,7 +89,7 @@ const CellComponent: CellType = (
     setFlagged((flagged) => !flagged);
   };
 
-  // this hook exposes the fucntion in the returned object
+  // this hook exposes the fucntions in the returned object
   useImperativeHandle(ref, () => ({
     onReveal,
     setNeighbors,
@@ -134,17 +134,18 @@ const CellComponent: CellType = (
     return null;
   };
 
+  const handlePress = () => {
+    onReveal(true);
+    props.getWinner();
+  };
+
+  const handleLongPress = () => {
+    flagCell();
+    props.getWinner();
+  };
+
   return !revealed ? (
-    <TouchableOpacity
-      onPress={() => {
-        onReveal(true);
-        props.getWinner();
-      }}
-      onLongPress={() => {
-        flagCell();
-        props.getWinner();
-      }}
-    >
+    <TouchableOpacity onPress={handlePress} onLongPress={handleLongPress}>
       <View style={[styles.cell, { width, height }]}>{getContent()}</View>
     </TouchableOpacity>
   ) : (

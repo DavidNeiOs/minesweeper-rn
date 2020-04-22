@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { CONSTANTS } from "../../constants";
 import { Cell } from "../Cell";
@@ -42,7 +42,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
   });
 
   useEffect(() => {
-    // Effect that reveals all cells when the game is over
+    // Effect that reveals all cells and shows the modal when the game is over
     if (!isGameOver.over) return;
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
@@ -131,7 +131,9 @@ export const Board: React.FC<BoardProps> = ({}) => {
     }
   };
 
-  // if all mines have been flagged and non mines unvealed return true
+  /**
+   * if all mines have been flagged and non mines unvealed return true
+   */
   const getWinner = () => {
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
