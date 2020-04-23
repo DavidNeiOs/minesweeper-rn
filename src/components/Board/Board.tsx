@@ -6,9 +6,14 @@ import { Cell } from "../Cell";
 import { ModalContext, Options } from "../../contexts/ModalContext";
 import { Score } from "../Score";
 
+const GameResult = {
+  lost: "LOST",
+  win: "WIN",
+};
+
 export interface GameState {
   over: boolean;
-  result: "" | "LOST" | "WIN";
+  result: string;
 }
 
 interface BoardProps {}
@@ -55,7 +60,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
     timer.current = 0;
 
     let options = {} as Options;
-    if (isGameOver.result === "LOST") {
+    if (isGameOver.result === GameResult.lost) {
       options = {
         title: "You Lose!",
         message: "You stepped on a mine.",
@@ -77,7 +82,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
   }, [isGameOver]);
 
   const onDie = () => {
-    setIsGameOver({ over: true, result: "LOST" });
+    setIsGameOver({ over: true, result: GameResult.lost });
   };
 
   /**
@@ -143,7 +148,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
         }
       }
     }
-    setIsGameOver({ over: true, result: "WIN" });
+    setIsGameOver({ over: true, result: GameResult.win });
   };
 
   /**
