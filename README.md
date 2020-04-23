@@ -8,6 +8,7 @@ this project was created using [Expo](https://expo.io/) make sure you have insta
 1. `cd` into the new directory
 1. Run `yarn` or `npm i` to install dependencies
 1. Run `yarn start` or `npm run start`
+   1. If you have the expo app in your phone scan the QR Code
 1. Once it has finish loading press **i** to launch the ios emulator or **a** for android (you must have the android emulator running)
 1. Have fun!
 
