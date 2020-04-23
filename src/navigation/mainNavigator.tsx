@@ -7,8 +7,10 @@ import { NavigationContainer, RouteProp } from "@react-navigation/native";
 
 import { Board } from "../screens/Board";
 import { Rules } from "../screens/Rules/Rules";
+import { Welcome } from "../screens/Welcone";
 
 export type MainParamList = {
+  Welcome: undefined;
   Board: undefined;
   Rules: undefined;
 };
@@ -27,7 +29,9 @@ export const MainNavigator: React.FC<{}> = ({}) => {
         screenOptions={{
           header: () => null,
         }}
+        initialRouteName="Welcome"
       >
+        <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Board" component={Board} />
         <Stack.Screen name="Rules" component={Rules} />
       </Stack.Navigator>

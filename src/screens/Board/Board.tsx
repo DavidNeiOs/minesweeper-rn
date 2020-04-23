@@ -6,7 +6,7 @@ import { Cell } from "../../components/Cell";
 import { ModalContext, Options } from "../../contexts/ModalContext";
 import { Score } from "../../components/Score";
 import { MainNavProps } from "../../navigation/mainNavigator";
-import { TouchableButton } from "../../components/TouchableButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const GameResult = {
   lost: "LOST",
@@ -230,14 +230,14 @@ export const Board: React.FC<BoardProps> = ({ navigation }) => {
         flaggedMines={flaggedMines}
       />
       <View>{renderBoard()}</View>
-      <TouchableButton
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
           navigation.navigate("Rules");
         }}
       >
         <Text style={styles.buttonText}>Rules</Text>
-      </TouchableButton>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -251,13 +251,14 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    borderBottomColor: "green",
+    borderBottomColor: "indigo",
     borderBottomWidth: 3,
-    backgroundColor: "greenyellow",
+    backgroundColor: "mediumpurple",
     paddingHorizontal: 15,
     paddingVertical: 8,
   },
   buttonText: {
     fontSize: 18,
+    color: "white",
   },
 });

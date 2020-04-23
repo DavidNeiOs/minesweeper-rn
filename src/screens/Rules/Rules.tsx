@@ -3,9 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { MainNavProps } from "../../navigation/mainNavigator";
-import { TouchableButton } from "../../components/TouchableButton";
-
-interface RulesProps {}
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const rules = [
   "Once the game starts the counter start adding every second.",
@@ -45,12 +43,12 @@ export const Rules: React.FC<RulesProps> = ({ navigation }) => {
         ))}
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableButton
+        <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Board")}
+          onPress={() => navigation.goBack()}
         >
-          <Text style={styles.buttonText}>Board</Text>
-        </TouchableButton>
+          <Text style={styles.buttonText}>Go Back</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -73,7 +71,8 @@ const styles = StyleSheet.create({
     color: "indigo",
   },
   container: {
-    paddingHorizontal: 10,
+    paddingLeft: 4,
+    paddingRight: 16,
   },
   rule: {
     flexDirection: "row",
@@ -94,14 +93,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    borderBottomColor: "indigo",
+    marginTop: 20,
+    borderBottomColor: "midnightblue",
     borderBottomWidth: 3,
-    backgroundColor: "mediumpurple",
+    backgroundColor: "powderblue",
     paddingHorizontal: 15,
     paddingVertical: 8,
   },
   buttonText: {
     fontSize: 18,
-    color: "white",
   },
 });
