@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { View } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import { CONSTANTS } from "../../constants";
-import { Cell } from "../Cell";
+import { Cell } from "../../components/Cell";
 import { ModalContext, Options } from "../../contexts/ModalContext";
-import { Score } from "../Score";
+import { Score } from "../../components/Score";
+import { MainNavProps } from "../../navigation/mainNavigator";
+import { TouchableButton } from "../../components/TouchableButton";
 
 const GameResult = {
   lost: "LOST",
@@ -16,9 +18,9 @@ export interface GameState {
   result: string;
 }
 
-interface BoardProps {}
+interface BoardProps extends MainNavProps<"Board"> {}
 
-export const Board: React.FC<BoardProps> = ({}) => {
+export const Board: React.FC<BoardProps> = ({ navigation }) => {
   const [isGameOver, setIsGameOver] = useState<GameState>({
     over: false,
     result: "",
@@ -221,13 +223,41 @@ export const Board: React.FC<BoardProps> = ({}) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Score
         boardWidth={boardWidth}
         score={score}
         flaggedMines={flaggedMines}
       />
-      {renderBoard()}
+      <View>{renderBoard()}</View>
+      <TouchableButton
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("Rules");
+        }}
+      >
+        <Text style={styles.buttonText}>Rules</Text>
+      </TouchableButton>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#BDBDBD",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    marginTop: 20,
+    borderBottomColor: "green",
+    borderBottomWidth: 3,
+    backgroundColor: "greenyellow",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  buttonText: {
+    fontSize: 18,
+  },
+});

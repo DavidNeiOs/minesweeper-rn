@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
 import { ModalProvider } from "./src/contexts/ModalContext";
-import { Board } from "./src/components/Board";
+import { MainNavigator } from "./src/navigation/mainNavigator";
 import { Modal } from "./src/components/Modal";
 
 const fetchFonts = () => {
@@ -25,20 +25,11 @@ export default function App() {
     );
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
       <ModalProvider>
-        <Board />
+        <MainNavigator />
         <Modal />
       </ModalProvider>
-    </View>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#BDBDBD",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

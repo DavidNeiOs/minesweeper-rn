@@ -17,7 +17,7 @@ import {
 } from "react-native";
 
 import Images from "../../assets/img";
-import { GameState } from "../Board";
+import { GameState } from "../../screens/Board";
 import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
 
 const getColor = (neighbors: number): TextStyle => {
