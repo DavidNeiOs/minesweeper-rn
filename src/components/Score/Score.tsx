@@ -4,12 +4,20 @@ import { View, Text, StyleSheet } from "react-native";
 interface ScoreProps {
   boardWidth: number;
   score: number;
+  flaggedMines: number;
 }
 
-export const Score: React.FC<ScoreProps> = ({ boardWidth, score }) => {
+export const Score: React.FC<ScoreProps> = ({
+  boardWidth,
+  score,
+  flaggedMines,
+}) => {
   return (
     <View style={[{ width: boardWidth }, styles.container]}>
-      <Text style={styles.score}>{score.toString().padStart(3, "0")}</Text>
+      <Text style={styles.text}>
+        {flaggedMines.toString().padStart(3, "0")}
+      </Text>
+      <Text style={styles.text}>{score.toString().padStart(3, "0")}</Text>
     </View>
   );
 };
@@ -20,9 +28,10 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 3,
     backgroundColor: "black",
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  score: {
+  text: {
     color: "red",
     fontSize: 24,
     letterSpacing: 2,

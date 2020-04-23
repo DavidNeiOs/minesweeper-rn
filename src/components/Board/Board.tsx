@@ -29,6 +29,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
   const { showModal } = useContext(ModalContext);
 
   const [score, setScore] = useState(0);
+  const [flaggedMines, setFlaggedMines] = useState(0);
 
   const timer = useRef(0);
 
@@ -137,6 +138,17 @@ export const Board: React.FC<BoardProps> = ({}) => {
   };
 
   /**
+   * add or decrease mine counter
+   */
+  const onFlagCell = (add: boolean) => {
+    setFlaggedMines((val) => {
+      if (add) return val + 1;
+      if (!add && val === 0) return 0;
+      return val - 1;
+    });
+  };
+
+  /**
    * if all mines have been flagged and non mines unvealed return true
    */
   const getWinner = () => {
@@ -195,6 +207,7 @@ export const Board: React.FC<BoardProps> = ({}) => {
             ref={grid[rowIdx][colIdx]}
             isGameOver={isGameOver}
             getWinner={getWinner}
+            onFlagCell={onFlagCell}
           />
         );
       });
@@ -209,7 +222,11 @@ export const Board: React.FC<BoardProps> = ({}) => {
 
   return (
     <View>
-      <Score boardWidth={boardWidth} score={score} />
+      <Score
+        boardWidth={boardWidth}
+        score={score}
+        flaggedMines={flaggedMines}
+      />
       {renderBoard()}
     </View>
   );

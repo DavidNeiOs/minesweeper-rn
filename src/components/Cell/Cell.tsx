@@ -18,6 +18,7 @@ import {
 
 import Images from "../../assets/img";
 import { GameState } from "../Board";
+import { useDidUpdateEffect } from "../../hooks/useDidUpdateEffect";
 
 const getColor = (neighbors: number): TextStyle => {
   let color = "black";
@@ -47,6 +48,7 @@ interface CellProps {
   onDie: () => void;
   isGameOver: GameState;
   getWinner: () => void;
+  onFlagCell: (add: boolean) => void;
 }
 
 type CellType = RefForwardingComponent<Handles, CellProps>;
@@ -60,24 +62,22 @@ const CellComponent: CellType = (
   const [isMined, setIsMined] = useState(mined.current);
   const [neighbors, setNeighbors] = useState(0);
   const [flagged, setFlagged] = useState(false);
-  // This variable tell us if it's the first time the cell renders to avoid our
-  // useEffect from running onReveal
-  const firtsRender = useRef(true);
 
-  useEffect(() => {
-    if (firtsRender.current) {
-      firtsRender.current = false;
-      return;
-    }
-
+  useDidUpdateEffect(() => {
     if (!revealed) return;
 
     if (isMined && !props.isGameOver.over && !flagged) {
       props.onDie();
-    } else {
-      props.onReveal(props.x, props.y);
+      return;
+    } else if (flagged && !isMined) {
+      props.onFlagCell(false);
     }
+    props.onReveal(props.x, props.y);
   }, [revealed]);
+
+  useDidUpdateEffect(() => {
+    props.onFlagCell(flagged);
+  }, [flagged]);
 
   const reset = () => {
     setRevealed(false);
